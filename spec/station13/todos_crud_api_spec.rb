@@ -27,7 +27,7 @@ RSpec.describe 'API: TODOリスト操作', clear_db: true do
 
   describe 'POST /api/todos' do
     it '新しいTODOを作成できること' do
-      post '/api/todos', test_todo
+      post '/api/todos', test_todo.to_json, { "CONTENT_TYPE" => "application/json" }
       expect(last_response.status).to eq 200
       created_todo = JSON.parse(last_response.body)
       expect(created_todo[1]).to eq(test_todo[:title])  # 作成したTODOが表示されること
@@ -37,7 +37,7 @@ RSpec.describe 'API: TODOリスト操作', clear_db: true do
   describe 'PUT /api/todos/:id' do
     it 'TODOを更新できること' do
       params = { id: test_todo[:id], title: '更新されたTODO' }
-      put "/api/todos/#{todo_id}", params
+      put "/api/todos/#{todo_id}", params.to_json, { "CONTENT_TYPE" => "application/json" }
       expect(last_response.status).to eq 200
       updated_response = JSON.parse(last_response.body)
       expect(updated_response[1]).to eq('更新されたTODO')  # 更新したTODOが表示されること
